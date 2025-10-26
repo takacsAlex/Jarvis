@@ -15,4 +15,4 @@ def post_ai(url, text):
     if result.get("status") == "success":
         return result["response"]
     else:
-        return "hiba ai"
+        return "There is a problem with the artificial intelligence"
