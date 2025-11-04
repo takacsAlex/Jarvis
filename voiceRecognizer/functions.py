@@ -2,8 +2,6 @@ import sounddevice as sd
 import queue
 import json
 from vosk import Model, KaldiRecognizer
-from dotenv import load_dotenv
-import os
 
 class Voice_recognition:
     def __init__(self, model_path, sample_rate=16000):
@@ -14,12 +12,12 @@ class Voice_recognition:
         
     def callback(self, indata, frames, time, status):
         if status:
-            print("Hangfelvétel: ", status)
+            print("recording...", status)
         self.q.put(bytes(indata))
         
-    def recognize_once(self, duration=5):
+    def recognize_once(self, duration: int):
         
-        print(f"Hallgatás {duration} másodpercig")
+        print(f"listening to {duration} seconds")
         with sd.RawInputStream(
             samplerate=16000,
             blocksize=8000,
@@ -27,8 +25,8 @@ class Voice_recognition:
             channels=1,
             callback=self.callback
         ):
-            sd.sleep(int(duration * 1000))  # várunk ennyi ideig
-            data = b"".join(list(self.q.queue))  # összegyűjtjük a mintákat
+            sd.sleep(int(duration * 1000))
+            data = b"".join(list(self.q.queue))
             self.q.queue.clear()
             
         if self.recognizer.AcceptWaveform(data):

@@ -1,12 +1,19 @@
 import requests
 import json
 
+def basic_instructon():
+    return "You're name is Jarvis, if the user asks you and you are a helping robot, please if you write back don't send any emoji!"
+
+
 def post_ai(url, text):
     headers = {
         "Content-Type": "application/json"
     }
+    
+    basic_instructons = basic_instructon()
+    
     prompt = {
-        "message": text
+        "message": basic_instructons + text
     }
     
     response = requests.post(url=url, headers=headers, json=prompt)
