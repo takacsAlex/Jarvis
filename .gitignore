@@ -1,1 +1,6 @@
 .env
+# Python cache mappák és bytecode fájlok
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd

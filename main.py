@@ -15,12 +15,13 @@ from textToSpeech.functions import text_to_speech
 from dotenv import load_dotenv
 import os
 
+
 def main():
     load_dotenv()
     model = os.getenv("VOICE_MODEL")
     recognizer = Voice_recognition(model_path=model)
     
-    print("Kezdjük a hangfelismerést...")
+    print("recording has started!")
     text = recognizer.recognize_once(duration=5)
     print(text)
     
@@ -28,8 +29,20 @@ def main():
     print(ai_response)
     text_to_speech(ai_response)
     
-GUI = Builder.load_file("jarvis.kv")
+
+
+class VoiceRecognizer(Screen):
+    pass
+    
+    
+GUI = Builder.load_file("front/jarvis.kv")
     
 class Jarvis(App):
     def build(self):
         return GUI
+    
+    def screen_change(self, screen_name):
+        screen_manager = self.root.ids["screen_manager"]
+        screen_manager.current = screen_name
+
+
