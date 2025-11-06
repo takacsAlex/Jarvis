@@ -1,37 +1,17 @@
-import sounddevice as sd
-import queue
-import json
-from vosk import Model, KaldiRecognizer
+import speech_recognition
 
-class Voice_recognition:
-    def __init__(self, model_path, sample_rate=16000):
-        self.model = Model(model_path)
-        self.recognizer = KaldiRecognizer(self.model, sample_rate)
-        self.sample_rate = sample_rate
-        self.q = queue.Queue()
-        
-    def callback(self, indata, frames, time, status):
-        if status:
-            print("recording...", status)
-        self.q.put(bytes(indata))
-        
-    def recognize_once(self, duration: int):
-        
-        print(f"listening to {duration} seconds")
-        with sd.RawInputStream(
-            samplerate=16000,
-            blocksize=8000,
-            dtype='int16',
-            channels=1,
-            callback=self.callback
-        ):
-            sd.sleep(int(duration * 1000))
-            data = b"".join(list(self.q.queue))
-            self.q.queue.clear()
+def voice_recognition():
+    recognizer = speech_recognition.Recognizer()
+
+    try:
+        with speech_recognition.Microphone() as mic:
+            recognizer.adjust_for_ambient_noise(mic, duration=0.5)
+            audio = recognizer.listen(mic, timeout=None, phrase_time_limit=None)
+                
+            text = recognizer.recognize_google(audio, language="hu-HU")
+            text = str(text).lower()
             
-        if self.recognizer.AcceptWaveform(data):
-            result = json.loads(self.recognizer.Result())
-            return result.get("text", "")
-        else:
-            partial = json.loads(self.recognizer.PartialResult())
-            return partial.get("partial", "")
+            return text
+                
+    except Exception as e:
+            return e

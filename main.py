@@ -8,7 +8,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 
-from voiceRecognizer.functions import Voice_recognition
+from voiceRecognizer.functions import voice_recognition
 from aI.functions import post_ai
 from textToSpeech.functions import text_to_speech
 
@@ -16,25 +16,15 @@ from dotenv import load_dotenv
 import os
 
 
-def main():
-    load_dotenv()
-    model = os.getenv("VOICE_MODEL")
-    recognizer = Voice_recognition(model_path=model)
-    
-    print("recording has started!")
-    text = recognizer.recognize_once(duration=5)
-    print(text)
-    
-    ai_response = post_ai(url=os.getenv("AI_ENDPOINT"), text=text)
-    print(ai_response)
-    text_to_speech(ai_response)
-    
-
-
 class VoiceRecognizer(Screen):
     pass
-    
-    
+
+class WaitingLobby(Screen):
+    pass
+
+class Output(Screen):
+    pass
+     
 GUI = Builder.load_file("front/jarvis.kv")
     
 class Jarvis(App):
@@ -44,5 +34,19 @@ class Jarvis(App):
     def screen_change(self, screen_name):
         screen_manager = self.root.ids["screen_manager"]
         screen_manager.current = screen_name
-
-
+        
+    def sending_voice_to_ai(self):
+        try:
+            print("voice recording started!")
+            text = voice_recognition()
+            print(text)
+        except Exception as e:
+            print(f"voice recognition error : {e}")
+        
+        try:
+            load_dotenv()
+            response = post_ai(url=os.getenv("AI_ENDPOINT"), text=text)
+            print(response)
+        except Exception as e:
+            print(f"waiting lobby error : {e}")
+        
