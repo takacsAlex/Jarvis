@@ -1,8 +1,7 @@
 import requests
-import json
 
 def basic_instructon():
-    return "The user is hungarian, so you have to speak hungarian too. You're name is Jarvis, if the user asks you and you are a helping robot, please if you write back don't send any emoji!"
+    return "The user is hungarian, so you have to speak hungarian too. You're name is Dzsárvisz, if the user asks you and you are a helping robot, please if you write back don't send any emoji!"
 
 
 def post_ai(url, text):

@@ -10,10 +10,12 @@ from kivy.uix.screenmanager import Screen
 
 from voiceRecognizer.functions import voice_recognition
 from aI.functions import post_ai
-from textToSpeech.functions import text_to_speech
+from textToSpeech.functions import speak
 
 from dotenv import load_dotenv
 import os
+
+import pygame
 
 
 class VoiceRecognizer(Screen):
@@ -47,6 +49,9 @@ class Jarvis(App):
             load_dotenv()
             response = post_ai(url=os.getenv("AI_ENDPOINT"), text=text)
             print(response)
+            
+            pygame.init()
+            pygame.mixer.init()
+            speak(response)
         except Exception as e:
             print(f"waiting lobby error : {e}")
-        
