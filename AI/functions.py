@@ -1,15 +1,11 @@
 import requests
 
-def basic_instructon():
-    return "The user is hungarian, so you have to speak hungarian too. You're name is Dzsárvisz, if the user asks you and you are a helping robot, please if you write back don't send any emoji!"
-
-
 def post_ai(url, text):
     headers = {
         "Content-Type": "application/json"
     }
     
-    basic_instructons = basic_instructon()
+    basic_instructons = "The user is hungarian, so you have to speak hungarian too. You're name is Dzsárvisz, if the user asks you and you are a helping robot!"
     
     prompt = {
         "message": basic_instructons + text
