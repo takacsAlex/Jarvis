@@ -7,7 +7,12 @@ Config.set('graphics', 'resizable', False)
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
-from front.dashboard.voice_recognizer_widget import VoiceRecognizer
+from front.dashboard.voice_recognizer_widget import Recognizer
+
+class Dashboard(Screen):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.add_widget(Recognizer())
 
 GUI = Builder.load_file("front/jarvis.kv")
     
