@@ -20,19 +20,18 @@ class Recognizer_btn(ButtonBehavior, Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.voice = Voice()
-        self.always_release = False  #enable cancellation
+        self.always_release = False
         self.size_hint = (None, None)
-        self.size = (200, 100)
+        self.size = (200, 75)
         self.pos_hint = {"center_x": 0.5, "center_y": 0.5}
         
-        #ai imported volume widget
-        self.num_bars = 10
-        self.max_height = 100
+        self.num_bars = 7
+        self.max_height = 35
         self.base_height = 20
         self.bar_heights = [self.base_height] * self.num_bars
         self.pressed = False
         self.volume = 0
-        self.CHUNK = 1024
+        self.CHUNK = 1021
         self.RATE = 44100
         self.p = pyaudio.PyAudio()
         self.stream = None
@@ -79,13 +78,15 @@ class Recognizer_btn(ButtonBehavior, Label):
     def update_canvas(self, *args):
         self.canvas.clear()
         with self.canvas:
-            Color(0, 0, 0)
-            bar_width = 10
-            gap = 4
+            Color(0, 0, 0, 0.5)
+            Rectangle(pos=self.pos, size=self.size)
+            Color(1, 1, 1, 0.6)
+            bar_width = 15
+            gap = 10
             y_center = self.y + self.height / 2
 
             total_width = self.num_bars * bar_width + (self.num_bars - 1) * gap
-            start_x = self.x + (self.width - total_width) / 2   # <<< KÖZÉPRE IGAZÍTÁS
+            start_x = self.x + (self.width - total_width) / 2 
 
             for i in range(self.num_bars):
                 if self.pressed:
