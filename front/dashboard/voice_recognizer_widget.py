@@ -11,11 +11,6 @@ import numpy as np
 import threading
 
 
-class VoiceRecognizer(Screen):
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.add_widget(Recognizer())
-
 class Recognizer(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -85,11 +80,12 @@ class Recognizer_btn(ButtonBehavior, Label):
         self.canvas.clear()
         with self.canvas:
             Color(0, 0, 0)
-            Rectangle(pos=self.pos, size=self.size)
-
-            Color(0, 1, 0)
-            bar_width = self.width / (self.num_bars * 2)
+            bar_width = 10
+            gap = 4
             y_center = self.y + self.height / 2
+
+            total_width = self.num_bars * bar_width + (self.num_bars - 1) * gap
+            start_x = self.x + (self.width - total_width) / 2   # <<< KÖZÉPRE IGAZÍTÁS
 
             for i in range(self.num_bars):
                 if self.pressed:
@@ -100,6 +96,8 @@ class Recognizer_btn(ButtonBehavior, Label):
                     h_top = self.base_height
                     h_bottom = self.base_height
 
-                x = i * 2 * bar_width + bar_width / 2
-                Rectangle(pos=(self.x + x, y_center), size=(bar_width, h_top))
-                Rectangle(pos=(self.x + x, y_center - h_bottom), size=(bar_width, h_bottom))
+                x = start_x + i * (bar_width + gap)
+
+                Rectangle(pos=(x, y_center), size=(bar_width, h_top))
+                Rectangle(pos=(x, y_center - h_bottom), size=(bar_width, h_bottom))
+
