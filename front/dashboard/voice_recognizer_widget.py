@@ -4,18 +4,19 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
+from kivy.animation import Animation
+
 from voiceRecognizer.functions import Voice
 
 import pyaudio
 import numpy as np
 import threading
 
-
 class Recognizer(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(Recognizer_btn())
-    
+
 class Recognizer_btn(ButtonBehavior, Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -64,7 +65,10 @@ class Recognizer_btn(ButtonBehavior, Label):
         print("recognition started")
         self.voice.start_recording()
             
-    def on_release(self):
+    def on_release_thread(self):
+        anim = Animation(pos_hint={"center_x": 0.5, "center_y": 0.16}, duration=1)
+        anim.start(self)
+        
         self.pressed = False
         if self.thread:
             self.thread.join()
@@ -74,6 +78,9 @@ class Recognizer_btn(ButtonBehavior, Label):
         print("recognition ended")
         text = self.voice.end_recording()
         print(f"text: {text}")
+            
+    def on_release(self):
+        threading.Thread(target=self.on_release_thread).start()
         
     def update_canvas(self, *args):
         self.canvas.clear()
