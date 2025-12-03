@@ -44,6 +44,6 @@ class Voice():
             text = self.recognizer.recognize_google(combined, language="hu-HU")
             return text.lower()
         except Exception as e:
-            return f"hiba történt a hangfelismerés során: {e}"
+            return f"there is a problem with the voice recognition"
         
         

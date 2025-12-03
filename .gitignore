@@ -1,4 +1,5 @@
 .env
+
 # Python cache repos and files
 __pycache__/
 *.py[cod]
